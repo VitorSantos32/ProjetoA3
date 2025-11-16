@@ -12,12 +12,16 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 /* Header Profissional */
@@ -427,13 +431,37 @@ header h1 {
     font-size: 0.9em;
 }
 
+/* Media Queries para Responsividade Mobile */
+
+/* Tablets e telas médias */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    .main-wrapper {
+        padding: 30px 20px;
+    }
+    
+    .card {
+        padding: 25px;
+    }
+    
+    .chart-container {
+        height: 350px;
+    }
+}
+
+/* Tablets pequenos e celulares grandes */
 @media (max-width: 768px) {
     .main-content {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .stats-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
     }
     
     .contact-info {
@@ -445,25 +473,386 @@ header h1 {
         flex-direction: column;
         gap: 10px;
         text-align: center;
+        padding: 0 15px;
     }
 
     .navbar-content {
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
+        padding: 15px 20px;
     }
 
     .nav-menu {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
         text-align: center;
+        width: 100%;
+    }
+
+    .nav-menu a {
+        padding: 10px;
+        border-bottom: 1px solid #e8ecef;
+    }
+
+    header {
+        padding: 40px 20px;
     }
 
     header h1 {
-        font-size: 2em;
+        font-size: 1.8em;
+        line-height: 1.2;
+    }
+
+    .subtitle {
+        font-size: 1.1em;
     }
 
     .logo-text h1 {
+        font-size: 1.3em;
+    }
+    
+    .logo-text p {
+        font-size: 0.75em;
+    }
+    
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .logo-section {
+        gap: 10px;
+    }
+    
+    .main-wrapper {
+        padding: 25px 15px;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    .card h2 {
+        font-size: 1.3em;
+        margin-bottom: 20px;
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+    
+    .age-segmentation .chart-container {
+        height: 250px;
+    }
+    
+    .stat-number {
+        font-size: 2.2em;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .filters-container {
+        padding: 20px;
+    }
+    
+    .filters-container h3 {
+        font-size: 1.2em;
+    }
+    
+    .filters-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .risk-factors {
+        grid-template-columns: 1fr;
+    }
+    
+    .risk-factor .percentage {
+        font-size: 2em;
+    }
+    
+    .insights {
+        padding: 20px;
+    }
+    
+    .insights h3 {
+        font-size: 1.1em;
+    }
+    
+    .insights li {
+        font-size: 0.9em;
+    }
+    
+    .badge {
+        padding: 10px 20px;
+        font-size: 0.85em;
+    }
+    
+    .btn-upload {
+        padding: 12px 20px;
+        font-size: 0.9em;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .upload-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .file-name {
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
+    
+    .footer {
+        padding: 30px 20px 20px;
+    }
+    
+    .footer h3 {
+        font-size: 1.2em;
+    }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .top-bar-content {
+        padding: 0 10px;
+        font-size: 0.8em;
+    }
+    
+    .navbar-content {
+        padding: 12px 10px;
+    }
+    
+    .logo-text h1 {
+        font-size: 1.1em;
+    }
+    
+    .logo-text p {
+        font-size: 0.7em;
+    }
+    
+    .logo-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+    
+    header {
+        padding: 30px 15px;
+    }
+    
+    header h1 {
         font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+    
+    .subtitle {
+        font-size: 0.95em;
+        margin-bottom: 15px;
+    }
+    
+    .header-badges {
+        margin-top: 20px;
+        gap: 10px;
+    }
+    
+    .badge {
+        padding: 8px 15px;
+        font-size: 0.8em;
+    }
+    
+    .main-wrapper {
+        padding: 20px 10px;
+    }
+    
+    .card {
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
+    .card h2 {
+        font-size: 1.1em;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .card h2 i {
+        font-size: 1em;
+    }
+    
+    .chart-container {
+        height: 250px;
+        margin: 15px 0;
+    }
+    
+    .age-segmentation .chart-container {
+        height: 200px;
+    }
+    
+    .stat-number {
+        font-size: 1.8em;
+    }
+    
+    .stat-label {
+        font-size: 0.85em;
+    }
+    
+    .stat-card {
+        padding: 15px;
+    }
+    
+    .stats-grid {
+        gap: 12px;
+    }
+    
+    .filters-container {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .filters-container h3 {
+        font-size: 1.1em;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+    
+    .filters-grid {
+        gap: 12px;
+    }
+    
+    .filter-group label {
+        font-size: 0.85em;
+        margin-bottom: 6px;
+    }
+    
+    .filter-group select,
+    .filter-group input {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+    
+    .btn-reset {
+        padding: 10px 20px;
+        font-size: 0.9em;
+        margin-top: 10px;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .risk-factor {
+        padding: 15px;
+    }
+    
+    .risk-factor .percentage {
+        font-size: 1.8em;
+    }
+    
+    .insights {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .insights h3 {
+        font-size: 1em;
+        margin-bottom: 12px;
+    }
+    
+    .insights li {
+        font-size: 0.85em;
+        margin: 8px 0;
+        padding-left: 20px;
+    }
+    
+    .file-upload-section {
+        margin-bottom: 20px;
+    }
+    
+    .file-info {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+    
+    .error-message,
+    .success-message {
+        padding: 12px 15px;
+        font-size: 0.85em;
+    }
+    
+    .footer {
+        padding: 25px 15px 15px;
+    }
+    
+    .footer h3 {
+        font-size: 1.1em;
+        margin-bottom: 15px;
+    }
+    
+    .footer-description {
+        font-size: 0.85em;
+    }
+    
+    .footer-info,
+    .footer-team {
+        font-size: 0.8em;
+    }
+    
+    .main-content {
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    /* Melhorar área de toque em mobile */
+    .nav-menu a,
+    .btn-reset,
+    .btn-upload {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Ajustar tabelas e elementos grandes */
+    .chart-container canvas {
+        max-width: 100%;
+        height: auto !important;
+    }
+}
+
+/* Ajustes gerais para touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .card:hover {
+        transform: none;
+    }
+    
+    .stat-card:hover {
+        transform: none;
+    }
+    
+    .risk-factor:hover {
+        border-color: #e8ecef;
+        box-shadow: none;
+    }
+    
+    /* Aumentar área de toque */
+    button,
+    .btn-upload,
+    .btn-reset,
+    select,
+    input[type="file"] + label {
+        min-height: 44px;
+        min-width: 44px;
     }
 }
 
