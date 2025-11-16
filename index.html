@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>População Residente - Consultas Médicas Região Nordeste 2003</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Nordeste Saúde</h1>
+                    <p>Análise de Consultas Médicas - Região Nordeste 2003</p>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#analise">Análise</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header Hero -->
+    <header id="inicio">
+        <div class="container">
+            <h1>População Residente - Consultas Médicas</h1>
+            <p class="subtitle">Região Nordeste - 2003 | Análise por Idade, Sexo, Situação do Domicílio e Rendimento</p>
+            <div class="header-badges">
+                <div class="badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Dados Seguros</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="container">
+
+        <div class="filters-container">
+            <h3><i class="fas fa-filter"></i> Filtros Interativos</h3>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="ageFilter">Faixa Etária:</label>
+                    <select id="ageFilter">
+                        <option value="all">Todas as Idades</option>
+                        <option value="0-4">0 a 4 anos</option>
+                        <option value="5-19">5 a 19 anos</option>
+                        <option value="20-39">20 a 39 anos</option>
+                        <option value="40-49">40 a 49 anos</option>
+                        <option value="50-64">50 a 64 anos</option>
+                        <option value="65+">65 anos ou mais</option>
+                        <option value="ignorada">Idade ignorada</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="diseaseFilter">Consulta Médica Realizada:</label>
+                    <select id="diseaseFilter">
+                        <option value="all">Todas</option>
+                        <option value="yes">Com Consulta Médica</option>
+                        <option value="no">Sem Consulta Médica</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="btn-reset" id="resetFiltersBtn">
+                        <i class="fas fa-redo"></i> Resetar Filtros
+                    </button>
+                </div>
+            </div>
+            <div class="age-segmentation">
+                <h3 class="age-segmentation-title"><i class="fas fa-chart-area"></i> Segmentação por Idade</h3>
+                <div class="chart-container">
+                    <canvas id="ageSegmentationChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <section id="analise" class="analise-section">
+            <div id="loadingIndicator" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <span>Carregando dados do arquivo Excel...</span>
+            </div>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div class="file-upload-section">
+                <div class="card">
+                    <h2><i class="fas fa-file-excel"></i> Carregar Arquivo Excel</h2>
+                    <p>Se o carregamento automático falhar, você pode fazer upload do arquivo manualmente:</p>
+                    <div class="upload-container">
+                        <input type="file" id="excelFileInput" accept=".xls,.xlsx" style="display: none;">
+                        <label for="excelFileInput" class="btn-upload">
+                            <i class="fas fa-upload"></i> Selecionar Arquivo Excel
+                        </label>
+                        <span id="fileName" class="file-name"></span>
+                    </div>
+                    <p class="file-info">Arquivo esperado: <strong>Analise/Tabela 6.1 - 2-2.xls</strong></p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRecords">0</div>
+                    <div class="stat-label"><i class="fas fa-users"></i> Registros Analisados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalConsultas">0</div>
+                    <div class="stat-label"><i class="fas fa-stethoscope"></i> Pessoas com Consulta Médica</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="numConsultas">0</div>
+                    <div class="stat-label"><i class="fas fa-user-times"></i> Pessoas sem Consulta Médica</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="main-content">
+            <div class="card">
+                <h2><i class="fas fa-chart-pie"></i> Distribuição de Consultas Médicas</h2>
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+                <div class="insights">
+                    <h3>Principais Descobertas</h3>
+                    <ul id="insightsList">
+                        <li>Carregando dados...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-chart-bar"></i> Distribuição por Sexo</h2>
+                <div class="chart-container">
+                    <canvas id="riskFactorsChart"></canvas>
+                </div>
+                <div class="risk-factors" id="genderStats">
+                    <div class="risk-factor">
+                        <div class="percentage" id="malePercentage">0%</div>
+                        <div>Masculino</div>
+                    </div>
+                    <div class="risk-factor">
+                        <div class="percentage" id="femalePercentage">0%</div>
+                        <div>Feminino</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-pie"></i> Distribuição por Situação do Domicílio</h2>
+                <div class="chart-container">
+                    <canvas id="domicilioChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-bar"></i> Distribuição por Classes de Rendimento</h2>
+                <div class="chart-container">
+                    <canvas id="rendimentoChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Análise por Grupos de Idade</h2>
+                <div class="insights">
+                    <h3>Distribuição de Consultas Médicas por Faixa Etária</h3>
+                    <ul id="ageGroupStats">
+                        <li>Carregando dados...</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> Informações do Estudo</h2>
+                <div class="insights">
+                    <h3>Dados da Pesquisa</h3>
+                    <ul>
+                        <li><strong>Região:</strong> Nordeste</li>
+                        <li><strong>Ano:</strong> 2003</li>
+                        <li><strong>Período de Referência:</strong> Últimos 12 meses</li>
+                        <li><strong>Variáveis Analisadas:</strong> Grupos de idade, Sexo, Situação do domicílio, Classes de rendimento mensal familiar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <footer class="footer" id="contato">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-hospital"></i> Nordeste Saúde</h3>
+                <p class="footer-description">População Residente - Consultas Médicas<br>Região Nordeste - 2003</p>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-info">
+                    <i class="fas fa-graduation-cap"></i> Análise de Dados e Big Data
+                </p>
+                <p class="footer-team">
+                    <strong>Equipe:</strong> Vitor Santos &amp; Gabriel Costa
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
