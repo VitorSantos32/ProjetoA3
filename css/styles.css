@@ -808,6 +808,15 @@ header h1 {
         font-size: 0.8em;
     }
     
+    .footer-icons {
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    .footer-icon {
+        height: 30px;
+    }
+    
     .main-content {
         gap: 15px;
         margin-bottom: 20px;
@@ -1001,6 +1010,31 @@ header h1 {
     margin-bottom: 10px;
 }
 
+.footer-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.footer-icon-link {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-icon-link:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+.footer-icon {
+    height: 35px;
+    width: auto;
+    display: block;
+}
+
 /* Estilos para upload de arquivo */
 .file-upload-section {
     margin-bottom: 30px;
@@ -1085,5 +1119,90 @@ header h1 {
 
 .success-message i {
     font-size: 1.2em;
+}
+
+/* Estilos para links do menu secundário */
+.link-menu-secundario {
+    color: #1a5490 !important;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: opacity 0.3s ease;
+}
+
+.link-menu-secundario:hover {
+    color: #1a5490 !important;
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Estilos para links do menu principal (navbar branca) */
+.navbar .nav-link {
+    color: #1a5490 !important;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: opacity 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #1a5490 !important;
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.navbar .nav-link:focus {
+    color: #1a5490 !important;
+}
+
+/* Estilos para o logo Nordeste Saúde */
+.bg-head-site {
+    display: flex;
+    align-items: center;
+    min-height: 100px;
+}
+
+.logo-nordeste-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+.logo-nordeste {
+    object-fit: contain;
+    height: auto;
+    max-height: 120px;
+    width: auto;
+    min-height: 90px;
+}
+
+.bg-head-site .row {
+    align-items: center;
+    margin: 0;
+}
+
+.bg-head-site .col-xl-3 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Ajuste responsivo para o logo */
+@media (max-width: 768px) {
+    .logo-nordeste {
+        max-height: 80px;
+        min-height: 60px;
+    }
+    
+    .bg-head-site {
+        min-height: 80px;
+    }
 }
 

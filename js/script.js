@@ -478,42 +478,70 @@ function createPatientsFromAggregatedData() {
 async function loadExcelFile() {
     showLoading(true);
     
-    try {
-        // Tentar carregar o arquivo da pasta Analise (com A maiúsculo)
-        const filePath = 'Analise/Tabela 6.1 - 2-2.xls';
-        
-        const response = await fetch(filePath);
-        
-        if (!response.ok) {
-            throw new Error(`Erro ao carregar arquivo: ${response.status}`);
+    // Detectar se está rodando localmente (file://) ou em servidor web
+    const isLocalFile = window.location.protocol === 'file:';
+    
+    // Tentar ambas as extensões (.xlsx e .xls)
+    // Usar caminho relativo que funciona tanto localmente quanto em servidor web (Vercel)
+    const possiblePaths = [
+        'Analise/Tabela 6.1 - 2-2.xlsx',
+        './Analise/Tabela 6.1 - 2-2.xlsx',
+        '/Analise/Tabela 6.1 - 2-2.xlsx',
+        'Analise/Tabela 6.1 - 2-2.xls',
+        './Analise/Tabela 6.1 - 2-2.xls',
+        '/Analise/Tabela 6.1 - 2-2.xls'
+    ];
+    
+    let lastError = null;
+    
+    for (const filePath of possiblePaths) {
+        try {
+            console.log(`Tentando carregar: ${filePath}`);
+            const response = await fetch(filePath);
+            
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar arquivo: ${response.status}`);
+            }
+            
+            const arrayBuffer = await response.arrayBuffer();
+            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+            
+            if (processExcelData(workbook)) {
+                showLoading(false);
+                console.log('Arquivo Excel carregado com sucesso!');
+                // Mostrar mensagem de sucesso apenas se não estiver em modo silencioso
+                if (!isLocalFile) {
+                    showSuccess(`Arquivo carregado automaticamente`);
+                }
+                // Inicializar gráficos com os dados carregados
+                initializeCharts();
+                return; // Sucesso, sair da função
+            } else {
+                throw new Error('Não foi possível processar os dados do Excel');
+            }
+        } catch (error) {
+            console.warn(`Falha ao carregar ${filePath}:`, error.message);
+            lastError = error;
+            // Continuar para tentar o próximo caminho
+            continue;
         }
-        
-        const arrayBuffer = await response.arrayBuffer();
-        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-        
-        if (processExcelData(workbook)) {
-            showLoading(false);
-            // Inicializar gráficos com os dados carregados
-            initializeCharts();
-        } else {
-            throw new Error('Não foi possível processar os dados do Excel');
-        }
-    } catch (error) {
-        console.error('Erro ao carregar arquivo Excel:', error);
-        showLoading(false);
-        
-        // Mostrar mensagem de erro mais amigável
-        const errorMsg = `Não foi possível carregar o arquivo automaticamente. ` +
-                        `Por favor, use o botão "Selecionar Arquivo Excel" acima para fazer upload manual do arquivo. ` +
-                        `Erro: ${error.message}`;
-        showError(errorMsg);
-        
-        // Não usar dados simulados automaticamente - esperar upload manual
-        // Se quiser usar dados simulados, descomente as linhas abaixo:
-        // console.warn('Usando dados simulados como fallback');
-        // generatePatientData();
-        // initializeCharts();
     }
+    
+    // Se chegou aqui, nenhum arquivo foi carregado com sucesso
+    showLoading(false);
+    console.error('Erro ao carregar arquivo Excel:', lastError);
+    
+    // Mensagem de erro adaptada ao ambiente
+    let errorMsg;
+    if (isLocalFile) {
+        errorMsg = `Para carregar o arquivo automaticamente, é necessário usar um servidor web. ` +
+                  `Use o botão "Selecionar Arquivo Excel" acima para fazer upload manual do arquivo.`;
+    } else {
+        errorMsg = `Não foi possível carregar o arquivo automaticamente. ` +
+                  `Por favor, use o botão "Selecionar Arquivo Excel" acima para fazer upload manual do arquivo. ` +
+                  `Erro: ${lastError ? lastError.message : 'Arquivo não encontrado'}`;
+    }
+    showError(errorMsg);
 }
 
 // Função para gerar dados simulados (fallback)
